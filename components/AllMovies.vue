@@ -11,7 +11,7 @@
                     <div class="p-3 flex flex-col gap-y-4">
                         <div class="flex justify-between">
                             <h3 class="text-lg md:text-2xl font-bold">{{ item.original_title }}</h3>
-                            <span @click="item.showDropDowns = ! item.showDropDowns" class="flex items-center justify-center h-7 w-7 cursor-pointer hover:bg-gray-200 rounded-full relative">
+                            <span v-click-outside="hideDropdownItems" @click="showDropdownItems(index)" class="flex items-center justify-center h-7 w-7 cursor-pointer hover:bg-gray-200 rounded-full relative">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                                   <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
                                 </svg>
@@ -78,8 +78,13 @@
 </template>
 
 <script>
+import ClickOutside from 'vue-click-outside'
+
 export default {
     name: "AllMovies",
+    directives: {
+        ClickOutside
+    },
     data() {
         return {
             movies: []
@@ -99,6 +104,18 @@ export default {
     methods: {
         async getMovies() {
             return await this.$axios.$get('https://api.themoviedb.org/3/movie/now_playing?api_key=bf319d377842d32fdaadacb03d139006');
+        },
+        showDropdownItems(index) {
+            // show one dropdown
+            setTimeout(() => {
+                this.movies[index].showDropDowns = ! this.movies[index].showDropDowns;
+            }, 40)
+        },
+        hideDropdownItems() {
+            // hide all dropdowns
+            this.movies.forEach(movie => {
+                movie.showDropDowns = false;
+            })
         }
     }
 }
