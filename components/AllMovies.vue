@@ -1,5 +1,5 @@
 <template>
-    <div class="container mx-auto my-6 px-3">
+    <div class="container mx-auto px-3 py-10">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div v-for="(item, index) in movies"
                  :key="index"
